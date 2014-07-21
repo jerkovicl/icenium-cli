@@ -171,6 +171,7 @@ interface IProjectCapabilities {
 	livesync: boolean;
 	livesyncCompanion: boolean;
 	updateKendo: boolean;
+	liveSyncUrl: string;
 }
 
 interface IOpener {

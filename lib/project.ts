@@ -51,7 +51,8 @@ export class Project implements Project.IProject {
 			simulate: true,
 			livesync: true,
 			livesyncCompanion: true,
-			updateKendo: true
+			updateKendo: true,
+			liveSyncUrl: "icenium://"
 		},
 		NativeScript: {
 			build: false,
@@ -60,7 +61,8 @@ export class Project implements Project.IProject {
 			simulate: false,
 			livesync: false,
 			livesyncCompanion: true,
-			updateKendo: false
+			updateKendo: false,
+			liveSyncUrl: "nativescript://"
 		}
 	};
 
