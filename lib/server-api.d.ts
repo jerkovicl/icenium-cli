@@ -308,15 +308,25 @@ declare module Server{
 		exportSolution(solutionSpaceName: string, solutionName: string, $resultStream: any): IFuture<void>;
 		getExportedSolution(solutionName: string, $resultStream: any): IFuture<void>;
 		importPackage(solutionName: string, projectName: string, parentIdentifier: string, archivePackage: any): IFuture<void>;
+<<<<<<< HEAD
 		importProject(solutionName: string, projectName: string, package_: any): IFuture<void>;
+=======
+		importProject(solutionName: string, projectName: string, $package: any): IFuture<void>;
+>>>>>>> Auto generated files
 		getProjectContents(solutionName: string, projectName: string): IFuture<string>;
 		saveProjectContents(solutionName: string, projectName: string, projectContents: string): IFuture<void>;
 		upgradeSolution(solutionName: string): IFuture<void>;
 		getSolution(solutionName: string, checkUpgradability: boolean): IFuture<Server.SolutionData>;
 		canLoadSolution(solutionName: string): IFuture<boolean>;
 		deleteSolution(solutionName: string): IFuture<void>;
+<<<<<<< HEAD
 		createProject(solutionName: string, expansionData: Server.ProjectTemplateExpansionData, projectName?: string): IFuture<void>;
 		renameSolution(solutionName: string, newSolutionName: string): IFuture<void>;
+=======
+		createProject(solutionName: string, expansionData: Server.ProjectTemplateExpansionData): IFuture<void>;
+		renameSolution(solutionName: string, newSolutionName: string): IFuture<void>;
+		createProject(solutionName: string, expansionData: Server.ProjectTemplateExpansionData, projectName?: string): IFuture<void>;
+>>>>>>> Auto generated files
 		deleteProject(solutionName: string, projectName: string): IFuture<void>;
 		setProjectProperty(solutionName: string, projectName: string, configuration: string, changeset: IDictionary<string>): IFuture<void>;
 		renameProject(solutionName: string, projectName: string, newProjectName: string): IFuture<void>;
