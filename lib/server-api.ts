@@ -66,8 +66,12 @@ export class CordovaService implements Server.ICordovaServiceContract{
 		return this.$serviceProxy.call<Server.CordovaPluginData[]>('GetPlugins', 'GET', ['api','cordova',encodeURI(helpers.stringReplaceAll(version,'\\', '/')),'plugins'].join('/'), 'application/json', null, null);
 	}
 	public getJs(version: string, platform: Server.DevicePlatform, $resultStream: any): IFuture<void>{
+<<<<<<< HEAD
 		return this.$serviceProxy.call<void>('GetJs', 'GET', ['api','cordova',encodeURI(helpers.stringReplaceAll(version,'\\', '/')),encodeURI(helpers.stringReplaceAll(Server.DevicePlatform[platform],'\\', '/')),'js'].join('/'), 'application/octet-stream', null, $resultStream);
 >>>>>>> Auto generated files
+=======
+		return this.$serviceProxy.call<void>('GetJs', 'GET', ['api','cordova',encodeURI(helpers.stringReplaceAll(version,'\\', '/')),encodeURI(helpers.stringReplaceAll(<any>platform,'\\', '/')),'js'].join('/'), 'application/octet-stream', null, $resultStream);
+>>>>>>> Integration with new server-api
 	}
 	public getMigrationData(): IFuture<Server.CordovaMigrationData>{
 		return this.$serviceProxy.call<Server.CordovaMigrationData>('GetMigrationData', 'GET', ['api','cordova','migration-data'].join('/'), 'application/json', null, null);
