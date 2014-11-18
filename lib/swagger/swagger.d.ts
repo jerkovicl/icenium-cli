@@ -83,8 +83,11 @@ declare module Swagger {
 	}
 
 	interface IServiceEndpoint {
+		operationContractName: string;
+		callResultType: string;
 		endpointInterface: ILine;
 		endpointImplementation: IBlock;
+		paramsMap: IDictionary<string>;
 	}
 }
 
