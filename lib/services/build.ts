@@ -94,7 +94,6 @@ export class BuildService implements Project.IBuildService {
 			buildProperties.LiveSyncToken = liveSyncToken;
 
 			var body = this.$server.build.buildProject(solutionName, projectName, { Properties: buildProperties, Targets: []}).wait();
-
 			var buildResults: Server.IPackageDef[] = body.ResultsByTarget["Build"].Items.map((buildResult: any) => {
 				var fullPath = buildResult.FullPath.replace(/\\/g, "/");
 				var solutionPath = util.format("%s/%s", projectName, fullPath);
