@@ -1,6 +1,6 @@
 {
 	"AB_SERVER_PROTO": "https",
-	"AB_SERVER": "icelocal.icenium.com",
+	"AB_SERVER": "taptestapp.icenium.com",
 	"DEBUG": false,
 	"PROXY_TO_FIDDLER": false,
 	"DEFAULT_CORDOVA_PROJECT_TEMPLATE": "KendoUI.TabStrip",

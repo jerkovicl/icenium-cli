@@ -69,7 +69,8 @@
     "xml2js": "0.4.1",
     "xmlhttprequest": "https://github.com/telerik/node-XMLHttpRequest/tarball/master",
     "yargs": "1.2.2",
-    "zipstream": "https://github.com/Icenium/node-zipstream/tarball/master"
+    "zipstream": "https://github.com/Icenium/node-zipstream/tarball/master",
+    "JSV": "^4.0.2"
   },
   "analyze": true,
   "devDependencies": {

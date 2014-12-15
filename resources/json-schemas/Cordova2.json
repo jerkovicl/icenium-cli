@@ -1,0 +1,14 @@
+﻿{
+	"$schema": "http://json-schema.org/draft-03/schema#",
+	"id": "Cordova-2.*",
+	"type": "object",
+	"required": true,
+	"additionalProperties": false,
+	"properties": {
+		"TemplateAppName": {
+			"type": "string",
+			"required": true
+		}
+	},
+	"extends": [{ "$ref": "Cordova*" }]
+}

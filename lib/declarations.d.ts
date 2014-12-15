@@ -398,13 +398,27 @@ interface IProcessInfo {
 	isRunning(name: string): IFuture<boolean>;
 }
 
-interface IBuildConfigurationService {
-	BuildConfigurationData: IFuture<IBuildConfigurationData>;
-	saveBuildConfigurationData(): IFuture<void>;
-	readBuildConfigurationData(): IFuture<void>;
+interface IJsonSchemaLoader {
+	loadSchemas(): IFuture<void>;
 }
 
-interface IBuildConfigurationData {
-	CorePlugins: string[];
-	CordovaPluginVariables: any;
+interface IJsonSchemaResolver {
+	loadedSchemas: string[];
+	isSchemaLoaded(schemaId: string): boolean;
 }
+
+interface ISchema {
+	$schema: string;
+	id: string;
+	type: string;
+	additionalProperties: boolean;
+	properties: IDictionary<any>;
+	required?: boolean;
+	extends?: ISchemaExtends[]
+}
+
+interface ISchemaExtends {
+	"$ref": string;
+}
+
+

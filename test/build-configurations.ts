@@ -40,7 +40,8 @@ function getCordovaPluginsData(cordovaPlugins: string[]): any[] {
 }
 
 function createMarketplacePluginsData(marketplacePlugins: any[]) {
-	var json = '[';
+	var
+		json = '[';
 	var index = 0;
 	_.each(marketplacePlugins, plugin => {
 		var uniqueId = plugin.Identifier;
