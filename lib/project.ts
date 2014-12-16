@@ -712,17 +712,12 @@ class ProjectCommandParameter implements ICommandParameter {
 }
 
 export class PrintProjectCommand implements ICommand {
-	constructor(private $project: Project.IProject,
-		private $jsonSchemaResolver: IJsonSchemaResolver) { }
+	constructor(private $project: Project.IProject) { }
 
 	execute(args: string[]): IFuture<void> {
 		return (() => {
-			this.$jsonSchemaResolver.getSchema(this.$project.projectData.FrameworkVersion)
+			this.$project.printProjectProperty(args[0]).wait();
 		}).future<void>()();
-	}
-
-	private getFrameworkName(): string {
-		
 	}
 
 	allowedParameters: ICommandParameter[] = [new ProjectCommandParameter(this.$project)];

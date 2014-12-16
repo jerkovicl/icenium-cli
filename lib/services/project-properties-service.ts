@@ -11,9 +11,9 @@ import projectTypes = require("../project-types");
 
 export class ProjectPropertiesService implements IProjectPropertiesService {
 	constructor(private $fs: IFileSystem,
-				private $errors: IErrors,
-				private $injector: IInjector,
-				private $resources: IResourceLoader) {
+		private $errors: IErrors,
+		private $injector: IInjector,
+		private $resources: IResourceLoader) {
 	}
 
 	public getProjectProperties(projectFile: string, isJsonProjectFile: boolean): IFuture<IProjectData> {
