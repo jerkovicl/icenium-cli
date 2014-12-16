@@ -127,3 +127,4 @@ $injector.require("processInfo", "./process-info");
 
 $injector.require("jsonSchemaLoader", "./json-schema/json-schema-loader");
 $injector.require("jsonSchemaResolver", "./json-schema/json-schema-resolver");
+$injector.require("jsonSchemaValidator", "./json-schema/json-schema-validator");

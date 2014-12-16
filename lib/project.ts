@@ -447,12 +447,8 @@ export class Project implements Project.IProject {
 		properties.AppIdentifier = appid;
 		properties.ProjectGuid = commonHelpers.createGUID();
 
-		if(!properties.WP8ProductID) {
-			properties.WP8ProductID = commonHelpers.createGUID();
-		}
-		if(!properties.WP8PublisherID) {
-			properties.WP8PublisherID = commonHelpers.createGUID();
-		}
+		properties.WP8ProductID = commonHelpers.createGUID();
+		properties.WP8PublisherID = commonHelpers.createGUID();
 
 		return properties;
 	}
@@ -716,12 +712,17 @@ class ProjectCommandParameter implements ICommandParameter {
 }
 
 export class PrintProjectCommand implements ICommand {
-	constructor(private $project: Project.IProject) { }
+	constructor(private $project: Project.IProject,
+		private $jsonSchemaResolver: IJsonSchemaResolver) { }
 
 	execute(args: string[]): IFuture<void> {
 		return (() => {
-			this.$project.printProjectProperty(args[0]).wait();
+			this.$jsonSchemaResolver.getSchema(this.$project.projectData.FrameworkVersion)
 		}).future<void>()();
+	}
+
+	private getFrameworkName(): string {
+		
 	}
 
 	allowedParameters: ICommandParameter[] = [new ProjectCommandParameter(this.$project)];

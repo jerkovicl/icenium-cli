@@ -398,27 +398,4 @@ interface IProcessInfo {
 	isRunning(name: string): IFuture<boolean>;
 }
 
-interface IJsonSchemaLoader {
-	loadSchemas(): IFuture<void>;
-}
-
-interface IJsonSchemaResolver {
-	loadedSchemas: string[];
-	isSchemaLoaded(schemaId: string): boolean;
-}
-
-interface ISchema {
-	$schema: string;
-	id: string;
-	type: string;
-	additionalProperties: boolean;
-	properties: IDictionary<any>;
-	required?: boolean;
-	extends?: ISchemaExtends[]
-}
-
-interface ISchemaExtends {
-	"$ref": string;
-}
-
 

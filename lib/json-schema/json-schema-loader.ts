@@ -2,31 +2,48 @@
 "use strict";
 
 import path = require("path");
-
-var jsv = require("jsv").JSV;
+import jsonSchemaResolverPath = require("./json-schema-resolver");
 
 export class JsonSchemaLoader implements IJsonSchemaLoader {
+
 	private schemasFolderPath: string = null;
-	private schemas: ISchema[] = null;
+	private schemas: IDictionary<ISchema> = null;
+	private schema: ISchema = null;
+	private loadedSchemas: IDictionary<ISchema> = null;
 
 	public constructor(private $fs: IFileSystem,
 		private $errors: IErrors,
-		private $jsonSchemaResolver: IJsonSchemaResolver) {
+		private $injector: IInjector) {
 		this.schemasFolderPath = path.join(__dirname, "../../", "resources", "json-schemas");
-		this.schemas = [];
+		this.schemas = Object.create(null);
+		this.loadedSchemas = Object.create(null);
+
+		this.loadSchemas().wait();
+
+		var schemaResolver = this.$injector.resolve(jsonSchemaResolverPath.JsonSchemaResolver, { schemas: this.loadedSchemas });
+		this.$injector.register("jsonSchemaResolver", schemaResolver);
 	}
 
-	public loadSchemas(): IFuture<void> {
+	private loadSchemas(): IFuture<void> {
 		return (() => {
-			var schemasDirectoryContent = this.$fs.readDirectory(this.schemasFolderPath).wait();
-			this.schemas = <ISchema[]>_.chain(schemasDirectoryContent)
-				.filter((filePath: string) => path.extname(filePath) === ".json")
-				.map((filePath: string) => this.$fs.readJson(filePath).wait())
-				.values();
+			var fileNames = this.$fs.readDirectory(this.schemasFolderPath).wait();
+			_.each(fileNames, (fileName: string) => {
+				if( path.extname(fileName) === ".json") {
+					var fullFilePath = path.join(this.schemasFolderPath, fileName);
+					var schema = this.$fs.readJson(fullFilePath).wait();
+					this.schemas[schema.id] = schema;
+				}
+			});
 
-			_.each(this.schemas, (schema: ISchema) => this.loadSchema(schema).wait());
+			var schemas = _.values(this.schemas);
+			_.each(schemas, (schema: ISchema) => this.loadSchema(schema).wait());
 
 		}).future<void>()();
+	}
+
+	private isSchemaLoaded(schemaId: string): boolean {
+		var schemaIds = _.keys(this.loadedSchemas);
+		return _.contains(schemaIds, schemaId);
 	}
 
 	private loadSchema(schema: ISchema): IFuture<void> {
@@ -34,7 +51,7 @@ export class JsonSchemaLoader implements IJsonSchemaLoader {
 			var id = schema.id;
 			var extendsProperty = schema.extends;
 
-			if(!this.$jsonSchemaResolver.isSchemaLoaded(id)) {
+			if(!this.isSchemaLoaded(id)) {
 				if(extendsProperty && extendsProperty.length > 0) {
 					_.each(extendsProperty, (ext: ISchemaExtends) => {
 						var schemaRef = ext.$ref;
@@ -44,17 +61,17 @@ export class JsonSchemaLoader implements IJsonSchemaLoader {
 							this.$errors.fail("Schema %s not found.", schemaRef);
 						}
 
-						this.loadSchema(extSchema);
+						this.loadSchema(extSchema).wait();
 					});
 				}
 
-				this.$jsonSchemaResolver.loadedSchemas.push(id);
+				this.loadedSchemas[schema.id] = schema;
 			}
 		}).future<void>()();
 	}
 
 	private findSchema(schemaId: string): ISchema {
-		return _.find(this.schemas, (schema: ISchema) => schema.id === schemaId);
+		return this.schemas[schemaId];
 	}
 }
 $injector.register("jsonSchemaLoader", JsonSchemaLoader);
