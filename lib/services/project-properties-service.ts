@@ -13,8 +13,8 @@ export class ProjectPropertiesService implements IProjectPropertiesService {
 	constructor(private $fs: IFileSystem,
 		private $errors: IErrors,
 		private $injector: IInjector,
-		private $resources: IResourceLoader) {
-	}
+		private $resources: IResourceLoader,
+		private $jsonSchemaValidator: IJsonSchemaValidator) { }
 
 	public getProjectProperties(projectFile: string, isJsonProjectFile: boolean): IFuture<IProjectData> {
 		return ((): any => {
@@ -75,7 +75,7 @@ export class ProjectPropertiesService implements IProjectPropertiesService {
 
 	public updateProjectProperty(projectData: any, mode: string, property: string, newValue: any, propSchema: any, useMapping: boolean = true) : IFuture<void> {
 		return ((): any => {
-			property = this.normalizePropertyName(property, propSchema);
+			property = this.normalizePropertyName(property);
 			var propData = propSchema[property];
 
 			var validate = (condition: boolean, ...args: string[]) => {
@@ -109,7 +109,7 @@ export class ProjectPropertiesService implements IProjectPropertiesService {
 
 				var validValues: any;
 				if (_.isArray(range)) {
-					validValues = helpers.toHash(range, (value) => value.toLowerCase(), _.identity);
+					//validValues = helpers.toHash(range, (value) => value.toLowerCase(), _.identity);
 				} else {
 					var keySelector = (value: any, key: string) => {
 						var result: string;
@@ -122,7 +122,7 @@ export class ProjectPropertiesService implements IProjectPropertiesService {
 						return result.toLowerCase();
 					};
 
-					validValues = helpers.toHash(range, keySelector, (value, key) => key);
+					//validValues = helpers.toHash(range, keySelector, (value, key) => key);
 				}
 
 				var badValues = _.reject(newValue, (value: string) => validValues[value]);
@@ -192,13 +192,16 @@ export class ProjectPropertiesService implements IProjectPropertiesService {
 		}).future<string>()();
 	}
 
-	public normalizePropertyName(property: string, schema: any): string {
-		if (!property) {
-			return property;
+	public normalizePropertyName(propertyName: string): string {
+		var validProperties = this.$jsonSchemaValidator.validProperties;
+		var normalizedPropertyName = validProperties[propertyName.toLowerCase()];
+
+		if(!normalizedPropertyName) {
+			var message = util.format("Unrecognized project property '%s'. Use 'appbuilder prop print' command to lists all available property names.", propertyName);
+			this.$errors.fail({ formatStr: message, suppressCommandHelp: true });
 		}
 
-		var propLookup = helpers.toHash(schema, (value, key) => key.toLowerCase(), (value, key) => key);
-		return propLookup[property.toLowerCase()] || property;
+		return normalizedPropertyName;
 	}
 
 	private getProjectSchemaPartHelp(schema: string, title: string): string {
@@ -236,6 +239,7 @@ export class ProjectPropertiesService implements IProjectPropertiesService {
 		}).future<string[]>()();
 	}
 
+	// This function is used when appbuilder init command is executed with project from Visual Studio
 	private getProjectPropertiesFromXmlProjectFile(projectFile: string): IFuture<any> {
 		return ((): any => {
 			var properties: any = {};

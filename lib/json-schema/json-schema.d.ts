@@ -20,4 +20,7 @@ interface IJsonSchemaResolver {
 }
 
 interface IJsonSchemaValidator {
+	validProperties: IStringDictionary;
+	validate(data: IProjectData): any;
+	isValid(data: IProjectData): boolean;
 }

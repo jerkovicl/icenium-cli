@@ -151,20 +151,30 @@ declare module Project {
 		enumerateProjectFiles(additionalExcludedProjectDirsAndFiles?: string[]): IFuture<string[]>;
 		isProjectFileExcluded(projectDir: string, filePath: string, additionalExcludedDirsAndFiles?: string[]): boolean;
 		updateProjectPropertyAndSave(mode: string, propertyName: string, propertyValues: string[]): IFuture<void>;
-		printProjectProperty(property: string): IFuture<void>;
+		printProjectProperty(property: string): void;
 		createNewProject(projectType: number, projectName: string): IFuture<void>;
 		createProjectFileFromExistingProject(projectType: number): IFuture<void>;
 		createProjectFile(projectDir: string, projectType: number, properties: any): IFuture<void>;
 		createTemplateFolder(projectDir: string): IFuture<void>;
 		getTempDir(extraSubdir?:string): IFuture<string>;
 		saveProject(projectDir?: string): IFuture<void>;
-		validateProjectProperty(property: string, args: string[], mode: string): IFuture<boolean>;
+		validateProjectProperty(property: string, args: string[], mode: string): boolean;
 		getNewProjectDir(): void;
 		getProperty(propertyName: string, configuration: string): any;
 		setProperty(propertyName: string, value: any, configuration: string): void;
 		configurationSpecificData: IDictionary<IDictionary<any>>;
 		configurations: string[];
 		hasBuildConfigurations(): boolean;
+	}
+
+	interface IFrameworkProject {
+		defaultTemplateName: string;
+		getTemplateFileName(name: string): string;
+		projectTemplatesString(): string;
+	}
+
+	interface IFrameworkProjectBase {
+		projectTemplatesString(regex: RegExp): string;
 	}
 
 	interface IPlatformMigrator {
@@ -225,7 +235,7 @@ interface IProjectPropertiesService {
 	getProjectProperties(projectFile: string, isJsonProjectFile: boolean): IFuture<IProjectData>;
 	completeProjectProperties(properties: any): boolean;
 	updateProjectProperty(projectData: any, mode: string, property: string, newValue: any, propSchema: any, useMapping?: boolean) : IFuture<void>;
-	normalizePropertyName(property: string, schema: any): string;
+	normalizePropertyName(property: string): string;
 }
 
 interface IServerConfigurationData {

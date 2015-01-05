@@ -125,7 +125,7 @@ export class TemplatesService implements ITemplatesService {
 			this.$fs.createDirectory(templatesDir).wait();
 
 			_.each(templates, (template) => {
-				if (template["Category"] == "Configuration") {
+				if (template["Category"] === "Configuration") {
 					this.downloadTemplate(template, templatesDir).wait();
 				}
 			});

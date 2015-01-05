@@ -20,22 +20,6 @@ export function isNumber(n: any): boolean {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-export function toHash(collection: any, keySelector: (value: any, positionOrKey: any, collection: any) => string, valueSelector: (value: any, positionOrKey: any, collection: any) => any): any {
-	var result:any = {};
-	if (_.isArray(collection)) {
-		for (var i = 0; i < collection.length; ++i) {
-			result[keySelector(collection[i], i, collection)] =
-				valueSelector(collection[i], i, collection);
-		}
-	} else {
-		Object.keys(collection).forEach((key) => {
-			result[keySelector(collection[key], key, collection)] =
-				valueSelector(collection[key], key, collection);
-		});
-	}
-	return result;
-}
-
 var _projectFileSchemas: string[] = [];
 export function getProjectFileSchema(projectType: number): IFuture<any> {
 	return(() => {

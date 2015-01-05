@@ -10,6 +10,7 @@ export class JsonSchemaValidator implements IJsonSchemaValidator {
 	private static DEFAULT_SCHEMA_URI = "http://json-schema.org/draft-03/schema#";
 
 	private environment: any = null;
+	private _validProperties: IStringDictionary = null;
 
 	constructor(private $jsonSchemaLoader: IJsonSchemaLoader,
 		private $jsonSchemaResolver: IJsonSchemaResolver,
@@ -18,9 +19,30 @@ export class JsonSchemaValidator implements IJsonSchemaValidator {
 		this.environment.setDefaultSchemaURI(JsonSchemaValidator.DEFAULT_SCHEMA_URI);
 	}
 
-	public validate(data: IProjectData): void {
+	public get validProperties(): IStringDictionary {
+		if(!this._validProperties) {
+			this._validProperties = Object.create(null);
+			var schema = this.tryResolveValidationSchema();
+			var properties = _.union(_.keys(schema.properties), _.keys(schema.extends.properties));
+			_.each(properties, (propertyName: string) => {
+				this._validProperties[propertyName.toLowerCase()] = propertyName;
+			});
+		}
+
+		return this._validProperties;
+	}
+
+	public validate(data: IProjectData): any {
 		var schema = this.environment.createSchema(this.tryResolveValidationSchema());
-		this.environment.validate(data, schema);
+		var errors = this.environment.validate(data, schema);
+		//_.each(errors, (error: )
+		// TODO: parse errors and show more user friendly messages
+		return errors;
+	}
+
+	public isValid(data: IProjectData): boolean {
+		var errors = this.validate(data);
+		return errors.length !== 0;
 	}
 
 	private tryResolveValidationSchema(): ISchema {

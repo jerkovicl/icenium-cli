@@ -46,6 +46,6 @@ export class JsonSchemaResolver implements IJsonSchemaResolver {
 	}
 
 	private findSchema(schemaId: string): ISchema {
-		return _.find(this.schemas, (s: ISchema) => s.id === schemaId);
-	}
+	return _.find(this.schemas, (s: ISchema) => s.id === schemaId);
+}
 }
