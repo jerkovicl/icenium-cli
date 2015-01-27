@@ -76,6 +76,7 @@ function createTestInjector(): IInjector {
 	testInjector.register("projectFilesManager", projectFilesManagerLib.ProjectFilesManager);
 	testInjector.register("jsonSchemaConstants", jsonSchemaConstantsLib.JsonSchemaConstants);
 	testInjector.register("childProcess", childProcess.ChildProcess);
+	testInjector.register("httpClient", {});
 
 	return testInjector;
 }
