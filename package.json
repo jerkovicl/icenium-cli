@@ -62,7 +62,7 @@
     "ref-struct": "0.0.5",
     "rimraf": "2.2.6",
     "string-to-json": "0.1.0",
-    "tabtab": "https://github.com/Icenium/node-tabtab/tarball/master",
+    "tabtab": "https://github.com/Icenium/node-tabtab/tarball/vladimirov/merge-latest-changes",
     "temp": "0.6.0",
     "typescript": "1.4.1",
     "unzip": "0.1.11",
